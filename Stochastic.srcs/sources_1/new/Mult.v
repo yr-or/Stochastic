@@ -1,6 +1,6 @@
 // Multiply two stochastic numbers together
 
-module Mult(
+module Mult (
     input clk,
     input reset,
     input [7:0] num1,
@@ -52,7 +52,7 @@ module Mult(
     assign prod_stoch = num1_stoch & num2_stoch;
 
     // Convert to binary non-stochastic
-    StochToBin STB(
+    StochToBin STB (
         .clk                (clk),
         .reset              (reset),
         .bit_stream         (prod_stoch),

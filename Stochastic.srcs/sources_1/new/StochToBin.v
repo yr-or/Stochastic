@@ -4,12 +4,14 @@ module StochToBin (
     input clk,
     input reset,
     input bit_stream,
-    output [3:0] bin_number
+    output [7:0] bin_number
     );
 
+    localparam BITSTR_LENGTH = 256;  // 8-bits, max length of LFSR loop
+
     // unsigned counter with 2^k values
-    reg [3:0] count_ff = 0;
-    reg [4:0] clk_count = 0;
+    reg [7:0] count_ff = 0;
+    reg [8:0] clk_count = 0;    // 9-bits as need to count from 0-256 = 257 values.
     reg done = 1'b0;
 
     always @(posedge clk) begin
@@ -20,7 +22,7 @@ module StochToBin (
         end
         else begin
             // 16 clock cycles, assert done signal on counter = 16
-            if (clk_count < 5'd16) begin
+            if (clk_count < BITSTR_LENGTH) begin
                 count_ff <= count_ff + bit_stream;
                 clk_count <= clk_count + 1;
             end else begin
@@ -32,7 +34,7 @@ module StochToBin (
     end
 
     always @(posedge clk) begin
-        if (clk_count == 5'd15) begin
+        if (clk_count == BITSTR_LENGTH-1) begin
             done <= 1;
         end else begin
             done <= 0;
