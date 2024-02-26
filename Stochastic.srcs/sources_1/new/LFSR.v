@@ -5,6 +5,7 @@
 module LFSR(
     input clk,
     input reset,
+    input [7:0] seed,
     output [7:0] parallel_out
     );
 
@@ -18,14 +19,14 @@ module LFSR(
     // 8-bit shift register with two taps
     always @(posedge clk) begin
         if (reset)
-            shift_reg <= 8'b01101011;  // initial seed
+            shift_reg <= seed;  // initial seed
         else
             shift_reg <= {shift_reg[6:0], xor3};
     end
 
     // Initial seed
     initial begin
-        shift_reg = 8'b01101011;
+        shift_reg = seed;
     end
 
 assign parallel_out = shift_reg;

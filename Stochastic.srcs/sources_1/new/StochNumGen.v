@@ -1,23 +1,16 @@
 // Stochastic number generator
 
-module StochNumGen(
-    input clk,
-    input reset,
-    input [7:0] prob,  // k-bit unsigned binary integer B indicating probability
-    output stoch_num
+module StochNumGen
+    (
+        input clk,
+        input reset,
+        input [7:0] prob,       // k-bit unsigned binary integer B indicating probability
+        input [7:0] rand_num,   // k-bit random number source
+        output stoch_num
     );
 
-    // wires
-    wire [7:0] rand_num;  // k-bit random number from LFSR
     // registers
     reg bit_stream_ff;
-
-    // Instantiate LFSR
-    LFSR lfsr(
-        .clk                (clk),
-        .reset              (reset),
-        .parallel_out       (rand_num)
-    );
 
     // if R < B, output 1, comb logic
     always @(*) begin
