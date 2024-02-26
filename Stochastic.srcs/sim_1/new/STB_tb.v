@@ -24,6 +24,9 @@ module STB_tb();
     );
 
     initial begin
+        reset_tb = 1;
+        #30;
+        reset_tb = 0;
         #150;
         #200;
     end
