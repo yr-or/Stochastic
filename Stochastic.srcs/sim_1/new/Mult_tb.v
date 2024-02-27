@@ -9,7 +9,7 @@ module Mult_tb();
     wire [3:0] mul_tb;
 
 
-    Mult mu (
+    Mult_top mu (
         .clk                (clk_tb),
         .reset              (reset_tb),
         .num1               (num1_tb),

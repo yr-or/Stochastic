@@ -1,64 +1,11 @@
-// Multiply two stochastic numbers together
+// AND gate
 
 module Mult (
-    input clk,
-    input reset,
-    input [7:0] num1,
-    input [7:0] num2,
-    output [3:0] num_mul
+    input stoch_num1,
+    input stoch_num2,
+    output stoch_res
     );
 
-    wire num1_stoch;
-    wire num2_stoch;
-    wire prod_stoch;
-    wire [3:0] prod;
-    wire [7:0] rand_num1;
-    wire [7:0] rand_num2;
-
-    // Instantiate RNGs
-    LFSR lfsr1(
-        .clk                (clk),
-        .reset              (reset),
-        .seed               (8'b10110111),
-        .parallel_out       (rand_num1)
-    );
-
-    LFSR lfsr2(
-        .clk                (clk),
-        .reset              (reset),
-        .seed               (8'b01011100),
-        .parallel_out       (rand_num2)
-    );
-
-    // Generate num1, connect to RNG1
-    StochNumGen SNG1(
-        .clk                (clk),
-        .reset              (reset),
-        .prob               (num1),
-        .rand_num           (rand_num1),
-        .stoch_num          (num1_stoch)
-    );
-
-    // Generate num2, connect to RNG2
-    StochNumGen SNG2(
-        .clk                (clk),
-        .reset              (reset),
-        .prob               (num2),
-        .rand_num           (rand_num2),
-        .stoch_num          (num2_stoch)
-    );
-
-    // Multiply using AND gate
-    assign prod_stoch = num1_stoch & num2_stoch;
-
-    // Convert to binary non-stochastic
-    StochToBin STB (
-        .clk                (clk),
-        .reset              (reset),
-        .bit_stream         (prod_stoch),
-        .bin_number         (prod)
-    );
-
-    assign num_mul = prod;
+    assign stoch_res = stoch_num1 & stoch_num2;
 
 endmodule
