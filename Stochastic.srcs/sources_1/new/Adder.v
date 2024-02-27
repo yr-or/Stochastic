@@ -16,16 +16,9 @@ module Adder(
     StochNumGen sng_sel(
         .clk                (clk),
         .reset              (reset),
-        .prob               (8'b10000000), // 0.5
-        .rand_num           (rand_num),
-        .stoch_num          (stoch_num_sel)
-    );
-    // LFSR for sng_sel
-    LFSR lfsr_sng_sel(
-        .clk                (clk),
-        .reset              (reset),
         .seed               (8'b01001110),
-        .parallel_out       (rand_num)
+        .prob               (8'b10000000), // 0.5
+        .stoch_num          (stoch_num_sel)
     );
 
     // Multiplexer with two inputs

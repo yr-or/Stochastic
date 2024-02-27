@@ -12,30 +12,14 @@ module Mult_top (
     wire num2_stoch;
     wire prod_stoch;
     wire [3:0] prod;
-    wire [7:0] rand_num1;
-    wire [7:0] rand_num2;
 
-    // Instantiate RNGs
-    LFSR lfsr1(
-        .clk                (clk),
-        .reset              (reset),
-        .seed               (8'b10110111),
-        .parallel_out       (rand_num1)
-    );
-
-    LFSR lfsr2(
-        .clk                (clk),
-        .reset              (reset),
-        .seed               (8'b01011100),
-        .parallel_out       (rand_num2)
-    );
 
     // Generate num1, connect to RNG1
     StochNumGen SNG1(
         .clk                (clk),
         .reset              (reset),
+        .seed               (8'b10110111),
         .prob               (num1),
-        .rand_num           (rand_num1),
         .stoch_num          (num1_stoch)
     );
 
@@ -43,8 +27,8 @@ module Mult_top (
     StochNumGen SNG2(
         .clk                (clk),
         .reset              (reset),
+        .seed               (8'b01011100),
         .prob               (num2),
-        .rand_num           (rand_num2),
         .stoch_num          (num2_stoch)
     );
 

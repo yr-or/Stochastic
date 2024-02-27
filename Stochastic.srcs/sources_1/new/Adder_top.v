@@ -7,8 +7,6 @@ module Adder_top(
     output wire [7:0] result_bin
     );
 
-    wire [7:0] rand_num1;
-    wire [7:0] rand_num2;
     reg [7:0] num1 = 8'b10000000; // 0.5
     reg [7:0] num2 = 8'b01000000; // 0.25
     wire num1_stoch;
@@ -16,35 +14,21 @@ module Adder_top(
     wire sum_stoch;
     wire [7:0] sum_bin;
 
-    // Input stoch numbers
-    // Instantiate RNGs
-    LFSR lfsr1(
-        .clk                (clk),
-        .reset              (reset),
-        .seed               (8'b10110111),
-        .parallel_out       (rand_num1)
-    );
-    LFSR lfsr2(
-        .clk                (clk),
-        .reset              (reset),
-        .seed               (8'b01011100),
-        .parallel_out       (rand_num2)
-    );
 
-    // Generate num1, connect to RNG1
+    // Generate num1
     StochNumGen SNG1(
         .clk                (clk),
         .reset              (reset),
+        .seed               (8'b10110111),
         .prob               (num1),
-        .rand_num           (rand_num1),
         .stoch_num          (num1_stoch)
     );
-    // Generate num2, connect to RNG2
+    // Generate num2
     StochNumGen SNG2(
         .clk                (clk),
         .reset              (reset),
+        .seed               (8'b01011100),
         .prob               (num2),
-        .rand_num           (rand_num2),
         .stoch_num          (num2_stoch)
     );
 

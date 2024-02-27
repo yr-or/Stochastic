@@ -1,18 +1,27 @@
-// Stochastic number generator
+// Stochastic number generator, including RNG source
 
 module StochNumGen
     (
         input clk,
         input reset,
+        input [7:0] seed,
         input [7:0] prob,       // k-bit unsigned binary integer B indicating probability
-        input [7:0] rand_num,   // k-bit random number source
         output stoch_num
     );
 
     // registers
     reg bit_stream_ff;
+    wire [7:0] rand_num;
 
-    // if R < B, output 1, comb logic
+    // LFSR
+    LFSR lfsr(
+        .clk                    (clk),
+        .reset                  (reset),
+        .seed                   (seed),
+        .parallel_out           (rand_num)
+    );
+
+    // Comparator, R < B => 1, else 0
     always @(*) begin
         if (rand_num < prob)
             bit_stream_ff = 1'b1;
