@@ -1,6 +1,5 @@
-`default_nettype none
 
-// Incl. input SNGs and output STB
+// Ista. input SNGs and output STB
 module Adder_top(
     input wire clk,
     input wire reset,
