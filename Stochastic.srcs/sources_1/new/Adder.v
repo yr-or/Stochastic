@@ -20,17 +20,12 @@ module Adder(
         .stoch_num          (stoch_num_sel)
     );
 
-    // Multiplexer with two inputs
-    always @(posedge clk) begin
-        if (reset) begin
-            // zero everything
-            sum_stoch <= 0;
-        end else begin
-            if (stoch_num_sel)
-                sum_stoch <= stoch_num2;    // sel = 1
-            else
-                sum_stoch <= stoch_num1;    // sel = 0
-        end
+    // Multiplexer with two inputs - combinational
+    always @(*) begin
+        if (stoch_num_sel)
+            sum_stoch = stoch_num2;    // sel = 1
+        else
+            sum_stoch = stoch_num1;    // sel = 0
     end
 
     assign result_stoch = sum_stoch;
