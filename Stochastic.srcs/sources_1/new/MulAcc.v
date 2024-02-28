@@ -10,11 +10,6 @@ module MulAcc(
     wire stoch_mul_res;
     wire stoch_add_res;
 
-    // SNG1
-    StochNumGen sng1(
-        
-    );
-
     // Instantiate multiplier 
     Mult mult(
         .stoch_num1             (stoch_num1),

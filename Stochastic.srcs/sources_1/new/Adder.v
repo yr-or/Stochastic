@@ -11,7 +11,6 @@ module Adder(
     reg sum_stoch;
 
     // SNG for select line
-    wire [7:0] rand_num;
     wire stoch_num_sel;
     StochNumGen sng_sel(
         .clk                (clk),
