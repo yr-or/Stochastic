@@ -3,6 +3,7 @@
 module Adder(
     input clk,
     input reset,
+    input [7:0] seed,
     input stoch_num1,
     input stoch_num2,
     output result_stoch
@@ -15,7 +16,7 @@ module Adder(
     StochNumGen sng_sel(
         .clk                (clk),
         .reset              (reset),
-        .seed               (8'b01001110),
+        .seed               (seed),
         .prob               (8'b10000000), // 0.5
         .stoch_num          (stoch_num_sel)
     );
