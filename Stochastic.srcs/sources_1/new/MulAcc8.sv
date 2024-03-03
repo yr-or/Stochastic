@@ -20,11 +20,11 @@ module MulAcc8(
     assign add1_res_stoch = add1_res;
     assign add2_res_stoch = add2_res;
 
-    // 8 AND gates - multiplication
+    // 8 XOR gates - multiplication
     genvar i;
     generate
         for (i=0; i<8; i=i+1) begin
-            Mult mu (
+            Mult_bipolar mu (
                 .stoch_num1             (inps_stoch[i]),
                 .stoch_num2             (weights_stoch[i]),
                 .stoch_res              (mult_res[i])

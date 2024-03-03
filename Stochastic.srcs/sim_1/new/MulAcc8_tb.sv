@@ -26,6 +26,13 @@ module MulAcc8_tb();
         .add2_res_bin       (bin_add2_res)
     );
 
+    // Convert output from bipolar prob to number
+    reg mac_res_num;
+    Prob_to_num p_to_n(
+        .prob               (bin_mac_res),
+        .num                (mac_res_num)
+    );
+
     integer i;
     reg done = 0;
     initial begin
