@@ -1,6 +1,6 @@
 import random
 
-inputs = [182, 64, 17, 134, 155, 116, 48, 147]
+inputs = [182, 59, 17, 134, 155, 116, 48, 147]
 weights = [3, 149, 145, 141, 174, 165, 225, 106]
 
 inputs_px = [i/256 for i in inputs]

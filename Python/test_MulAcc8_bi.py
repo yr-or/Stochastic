@@ -12,8 +12,8 @@ def bipolar_to_prob_int(y):
 	return int(bipolar_to_prob(y)*256)
 
 
-x = [182, 59, 17, 134, 155, 116, 48, 147]
-w = [3, 149, 145, 141, 174, 165, 225, 106]
+x = [120, 240, 207, 125, 115, 123, 110, 93]
+w = [123, 96, 106, 225, 204, 2, 213, 113]
 
 # Get bipolar values
 x_bi = [prob_int_to_bipolar(i) for i in x]

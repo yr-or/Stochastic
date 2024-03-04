@@ -6,8 +6,8 @@ module MulAcc8_bi_tb();
     reg clk = 0;
     reg reset = 0;
     // Input values and weights, as binary probabilities
-    reg [7:0] inps_num_bin [0:7] = '{182, 59, 17, 134, 155, 116, 48, 147};
-    reg [7:0] wghts_num_bin [0:7] = '{3, 149, 145, 141, 174, 165, 225, 106};
+    reg [7:0] inps_num_bin [0:7] = '{120, 240, 207, 125, 115, 123, 110, 93};
+    reg [7:0] wghts_num_bin [0:7] = '{123, 96, 106, 225, 204, 2, 213, 113};
     // Outputs
     reg stoch_mac_res;
     reg [7:0] bin_mac_res;
