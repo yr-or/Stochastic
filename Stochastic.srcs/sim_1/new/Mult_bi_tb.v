@@ -1,6 +1,5 @@
-`timescale 1ns / 1ps
 
-module Mult_tb();
+module Mult_bi_tb();
 
     reg clk_tb = 1'b0;
     reg reset_tb = 1'b0;
@@ -9,7 +8,7 @@ module Mult_tb();
     wire [7:0] mul_tb;
 
 
-    Mult_top mu (
+    Mul_bi_top mu (
         .clk                (clk_tb),
         .reset              (reset_tb),
         .num1               (num1_tb),
@@ -21,9 +20,9 @@ module Mult_tb();
         reset_tb = 1'b1;
         #100;
         reset_tb = 1'b0;
-        // Test 0.5*0.25 = 0.125 = 0010 4-bit or 0010 0000 8-bit
-        num1_tb = 8'b10000000; // 0.5
-        num2_tb = 8'b01000000; // 0.25
+        // Test 0.5*-0.5 = -0.25
+        num1_tb = 8'd192; // 0.5 bipolar
+        num2_tb = 8'd64;  // -0.5
         #100;
     end
 

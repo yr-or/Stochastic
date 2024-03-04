@@ -6,6 +6,6 @@ module Mult_bipolar(
     output stoch_res
     );
 
-    assign stoch_res = stoch_num1 ^ stoch_num2;
+    assign stoch_res = ~(stoch_num1 ^ stoch_num2);
 
 endmodule
