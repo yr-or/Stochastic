@@ -1,5 +1,6 @@
+// Used to contain SNGs, and STB for MulAcc8_bi module
 
-module MulAcc8_top(
+module MulAcc8_bi_top(
     input clk,
     input reset,
     input [7:0] inps_num_bin [0:7],
@@ -8,7 +9,7 @@ module MulAcc8_top(
     output [7:0] mac_res_bin,
     output [7:0] mul_res_bin [0:7],     // Debug wire
     output [7:0] add1_res_bin [0:3],    // Debug wire
-    output [7:0] add2_res_bin [0:1]     // DEbug wire
+    output [7:0] add2_res_bin [0:1]     // Debug wire
     );
 
     // Stochastic numbers
@@ -48,7 +49,7 @@ module MulAcc8_top(
     endgenerate
 
     // MulAcc
-    MulAcc8 mac(
+    MulAcc8_bi mac(
         .clk                    (clk),
         .reset                  (reset),
         .inps_stoch             (inps_stoch),
@@ -105,5 +106,4 @@ module MulAcc8_top(
     assign mul_res_bin = mul_bin;
     assign add1_res_bin = add1_bin;
     assign add2_res_bin = add2_bin;
-
 endmodule

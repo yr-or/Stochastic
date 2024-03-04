@@ -1,5 +1,6 @@
+// MulAcc module with bipolar values
 
-module MulAcc8(
+module MulAcc8_bi(
     input clk,
     input reset,
     input inps_stoch [0:7],         // Bus of 8 stochastic numbers, for inputs 1-8
@@ -20,11 +21,11 @@ module MulAcc8(
     assign add1_res_stoch = add1_res;
     assign add2_res_stoch = add2_res;
 
-    // 8 AND gates - unipolar multiplication
+    // 8 XNOR gates - bipolar multiplication
     genvar i;
     generate
         for (i=0; i<8; i=i+1) begin
-            Mult mu (
+            Mult_bipolar mu (
                 .stoch_num1             (inps_stoch[i]),
                 .stoch_num2             (weights_stoch[i]),
                 .stoch_res              (mult_res[i])
@@ -69,5 +70,4 @@ module MulAcc8(
         .stoch_num2             (add2_res[1]),
         .result_stoch           (result_stoch)
     );
-
 endmodule
