@@ -8,7 +8,8 @@ module Neuron8_top(
     input [7:0] bias_bin,
     output [7:0] result_bin,
     output [7:0] macc_result_bin,    // debug wire
-    output result_stoch
+    output result_stoch,
+    output done
     );
 
     // Stochastic inputs
@@ -68,7 +69,8 @@ module Neuron8_top(
         .clk                (clk),
         .reset              (reset),
         .bit_stream         (neur_result_stoch),
-        .bin_number         (result_bin)
+        .bin_number         (result_bin),
+        .done               (done)
     );
 
     // STB for macc result

@@ -29,7 +29,7 @@ module ReLU_FSM(
     // Sequential logic for going to next state
     always @(posedge clk) begin
         if (reset) begin
-            state_ff <= STATE0;
+            state_ff <= STATE2;
         end else begin
             state_ff <= next_state;
         end
@@ -80,12 +80,12 @@ module ReLU_FSM(
                 else
                     next_state = STATE3;
             end
-            default : begin     // STATE0
+            default : begin     // STATE2
                 SN_out = 0;                 // Output always 0 when state < 5
                 if (in_stoch)
-                    next_state = STATE2;
+                    next_state = STATE4;
                 else
-                    next_state = STATE0;
+                    next_state = STATE1;
             end
         endcase
     end

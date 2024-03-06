@@ -1,4 +1,4 @@
-// SC Neuron rev 1
+// SC Neuron rev 2 - with activation function
 
 // Inputs and outputs all SNs
 module Neuron8(
@@ -14,6 +14,7 @@ module Neuron8(
     // Wires / register
     wire result_macc;
     wire result_bias;
+    wire result_relu;
 
     // MulAcc module
     MulAcc8_bi macc8(
@@ -34,7 +35,15 @@ module Neuron8(
         .result_stoch       (result_bias)
     );
 
-    assign result = result_bias;
+    // Activation function
+    ReLU_FSM act_fcn(
+        .clk                (clk),
+        .reset              (reset),
+        .in_stoch           (result_bias),
+        .out_stoch          (result_relu)
+    );
+
+    assign result = result_relu;
     assign macc_result = result_macc;
 
 endmodule
