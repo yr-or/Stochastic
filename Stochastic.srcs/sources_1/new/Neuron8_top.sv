@@ -8,6 +8,7 @@ module Neuron8_top(
     input [7:0] bias_bin,
     output [7:0] result_bin,
     output [7:0] macc_result_bin,    // debug wire
+    output [7:0] bias_out_bin,
     output result_stoch,
     output done
     );
@@ -19,6 +20,8 @@ module Neuron8_top(
 
     // Stochastic outputs
     wire neur_result_stoch;
+    wire macc_result_stoch;
+    wire bias_out_stoch;
 
     // LFSR seeds - 1 for each number generated
     reg [7:0] LFSR_seeds [0:15] = '{225, 254, 225, 243, 44, 9, 163, 124, 153, 223, 58, 255, 18, 202, 147, 179};
@@ -61,7 +64,8 @@ module Neuron8_top(
         .weights            (wghts_stoch),
         .bias               (bias_stoch),
         .result             (neur_result_stoch),
-        .macc_result        (macc_result)
+        .macc_result        (macc_result_stoch),
+        .bias_out           (bias_out_stoch)
     );
 
     // STB output
@@ -77,8 +81,16 @@ module Neuron8_top(
     StochToBin stb_macc(
         .clk                (clk),
         .reset              (reset),
-        .bit_stream         (macc_result),
+        .bit_stream         (macc_result_stoch),
         .bin_number         (macc_result_bin)
+    );
+
+    // STB bias result
+    StochToBin stb_bias(
+        .clk                (clk),
+        .reset              (reset),
+        .bit_stream         (bias_out_stoch),
+        .bin_number         (bias_out_bin)
     );
 
     assign result_stoch = neur_result_stoch;

@@ -8,7 +8,8 @@ module Neuron8(
     input weights [0:7],
     input bias,
     output result,
-    output macc_result          // debug wire
+    output macc_result,          // debug wire
+    output bias_out
     );
 
     // Wires / register
@@ -45,5 +46,6 @@ module Neuron8(
 
     assign result = result_relu;
     assign macc_result = result_macc;
+    assign bias_out = result_bias;
 
 endmodule
