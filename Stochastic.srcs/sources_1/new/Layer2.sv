@@ -13,9 +13,8 @@ module Layer2(
     localparam NUM_INP = 8;
 
     // Wires for SNGs -> Neurons
-    wire inps_stoch [0:NUM_INP-1];
     wire wghts_stoch [0:NUM_NEUR-1][0:NUM_INP-1];
-    wire bias_stoch [0:NUM_NEUR];
+    wire bias_stoch [0:NUM_NEUR-1];
 
     // Stoch output wires from neurons
     wire neurons_out_stoch [0:NUM_NEUR-1];

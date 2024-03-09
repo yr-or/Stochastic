@@ -1,76 +1,36 @@
-// Test module for layer2 - instantiate SNGs and STBs
 
-// Binary prob inputs and outputs
 module Layer2_test(
     input clk,
     input reset,
     input [7:0] input_data_bin [0:7],     // 8 8-bit values
-    input [7:0] weights_bin [0:7][0:7],   // binary prob of weights for each neur
-    input [7:0] biases_bin [0:7],
-    output results_bin [0:7],
-    output macc_results_bin [0:7],
+    output [7:0] results_bin [0:7],
+    output [7:0] macc_results_bin [0:7],
     output done
     );
 
-    localparam NUM_NEUR = 8;
+    localparam NUM_NEUR_L2 = 8;
     localparam NUM_INP = 8;
 
     // Stoch wires inputs
     wire inps_stoch [0:NUM_INP-1];
-    wire wghts_stoch [0:NUM_NEUR-1][0:NUM_INP-1];
-    wire bias_stoch [0:NUM_NEUR-1];
 
-    // stoch wires output
-    wire neur_res_stoch [0:NUM_NEUR-1];
-    wire macc_res_stoch [0:NUM_NEUR-1];
+    // Wires for Layer2
+    wire L2_out_stoch [0:NUM_NEUR_L2-1];
+    wire L2_macc_out_stoch [0:NUM_NEUR_L2-1];
 
     // LFSR seeds for inputs
     reg [7:0] LFSR_seeds_inps [0:NUM_INP-1] = '{ 213, 110, 175, 246, 139, 218, 49, 230 };
 
-    // LFSR seeds for weights
-    reg [7:0] LFSR_seeds_wghts [0:NUM_NEUR-1][0:NUM_INP-1] = '{
-        { 110, 71, 221, 252, 136, 133, 118, 9 },
-        { 13, 168, 208, 110, 139, 233, 117, 1 },
-        { 215, 5, 108, 197, 251, 115, 133, 6 },
-        { 27, 98, 173, 160, 102, 224, 254, 20 },
-        { 181, 111, 117, 254, 37, 193, 182, 24 },
-        { 69, 8, 252, 69, 47, 7, 238, 25 },
-        { 220, 68, 48, 162, 193, 199, 181, 20 },
-        { 213, 77, 47, 135, 224, 28, 252, 12 }
-    };
-
-    // LFSR seeds for biases
-    reg [7:0] LFSR_seeds_biases [0:NUM_NEUR-1] = '{ 66, 232, 239, 215, 227, 34, 141, 16 };
-
-    // Generate stoachastic inputs - 8x8 SNGs
-    genvar i, j;
+    // Generate stoachastic inputs - 8 SNGs
+    genvar i;
     generate
-        for (i=0; i<NUM_NEUR; i=i+1) begin
-            // generate 8 input streams
+        for (i=0; i<NUM_NEUR_L2; i=i+1) begin
             StochNumGen SNG_inps(
                 .clk                (clk),
                 .reset              (reset),
                 .seed               (LFSR_seeds_inps[i]),
                 .prob               (input_data_bin[i]),
                 .stoch_num          (inps_stoch[i])
-            );
-            // generate weights
-            for (j=0; j<NUM_INP; j=j+1) begin
-                StochNumGen SNG_wghts(
-                    .clk                (clk),
-                    .reset              (reset),
-                    .seed               (LFSR_seeds_wghts[i][j]),
-                    .prob               (weights_bin[i][j]),
-                    .stoch_num          (wghts_stoch[i][j])
-                );
-            end
-            // generate biases
-            StochNumGen SNG_bias(
-                .clk                (clk),
-                .reset              (reset),
-                .seed               (LFSR_seeds_biases[i]),
-                .prob               (biases_bin[i]),
-                .stoch_num          (bias_stoch[i])
             );
         end
     endgenerate
@@ -80,39 +40,43 @@ module Layer2_test(
         .clk                    (clk),
         .reset                  (reset),
         .data_in_stoch          (inps_stoch),
-        .weights_stoch          (wghts_stoch),
-        .biases_stoch           (bias_stoch),
-        .results                (neur_res_stoch),
-        .macc_results           (macc_res_stoch)
+        .results                (L2_out_stoch),
+        .macc_results           (L2_macc_out_stoch)
     );
 
-    // Convert to binary with STBs
-    wire [0:NUM_NEUR-1] done_stb_res;
-    wire [0:NUM_NEUR-1] done_stb_macc;
+    // STBs //
+    // Layer2
+    wire [0:NUM_NEUR_L2-1] done_stb_res_L2;
+    wire [0:NUM_NEUR_L2-1] done_stb_macc_L2;
+    wire [7:0] L2_out_bin [0:NUM_NEUR_L2-1];
+    wire [7:0] L2_macc_out_bin [0:NUM_NEUR_L2-1];
 
-    genvar k;
+    // Layer2 outputs STBs
+    genvar j;
     generate
-        for (k=0; k<NUM_NEUR; k=k+1) begin
-            // Convert final outputs to binary
-            StochToBin stb_res(
+        for (j=0; j<NUM_NEUR_L2; j=j+1) begin
+            // Convert layer 2 outputs to binary
+            StochToBin stb_L2_res(
                 .clk                (clk),
                 .reset              (reset),
-                .bit_stream         (neur_res_stoch[k]),
-                .bin_number         (results_bin[k]),
-                .done               (done_stb_res[k])
+                .bit_stream         (L2_out_stoch[j]),
+                .bin_number         (L2_out_bin[j]),
+                .done               (done_stb_res_L2[j])
             );
 
             // Convert macc results to binary
-            StochToBin stb_macc(
+            StochToBin stb_L2_macc(
                 .clk                (clk),
                 .reset              (reset),
-                .bit_stream         (macc_res_stoch[k]),
-                .bin_number         (macc_results_bin[k]),
-                .done               (done_stb_macc[k])
+                .bit_stream         (L2_macc_out_stoch[j]),
+                .bin_number         (L2_macc_out_bin[j]),
+                .done               (done_stb_macc_L2[j])
             );
         end
     endgenerate
 
-    assign done = &(done_stb_res);
+    assign done = &(done_stb_res_L2);
+    assign results_bin = L2_out_bin;
+    assign macc_results_bin = L2_macc_out_bin;
 
 endmodule
