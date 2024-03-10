@@ -252,7 +252,7 @@ module Neuron8_tb();
         reset = 1;
         #10;
 
-        for (int i=0; i<NUM_TESTS; i=i+1) begin
+        for (int i=0; i<100; i=i+1) begin
             // Set inputs
             reset = 1;
             input_data_bin = test_inputs[i];

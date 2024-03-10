@@ -44,47 +44,80 @@ with open("C:\\Users\\Rory\\Documents\\HDL\\Stochastic\\Python\\neuron8_test_pyt
 		data_python["bias_out"].append(int(m.group('bias_out')))
 
 # Plot outputs in subplot
-plt.figure(1)
-# Plot macc_outs
-plt.subplot(2,2,1)
-plt.scatter(data_python["macc_out"], data_vivado["macc_out"])
-plt.xlabel("Python data")
-plt.ylabel("Vivado data")
-plt.title("macc_out")
-plt.grid(True)
+def plot_subplots():
+	plt.figure(1)
+	# Plot macc_outs
+	plt.subplot(2,2,1)
+	plt.scatter(data_python["macc_out"], data_vivado["macc_out"])
+	plt.xlabel("Python data")
+	plt.ylabel("Vivado data")
+	plt.title("macc_out")
+	plt.grid(True)
 
-# Plot the bias_out data
-plt.subplot(2,2,2)
-plt.scatter(data_python["bias_out"], data_vivado["bias_out"])
-plt.xlabel("Python data")
-plt.ylabel("Vivado data")
-plt.title("bias_out")
-plt.grid(True)
+	# Plot the bias_out data
+	plt.subplot(2,2,2)
+	plt.scatter(data_python["bias_out"], data_vivado["bias_out"])
+	plt.xlabel("Python data")
+	plt.ylabel("Vivado data")
+	plt.title("bias_out")
+	plt.grid(True)
 
-# Plot the final results data
-plt.subplot(2,2,3)
-plt.scatter(data_python["Result"], data_vivado["Result"])
-plt.xlabel("Python data")
-plt.ylabel("Vivado data")
-plt.title("Results")
-plt.grid(True)
+	# Plot the final results data
+	plt.subplot(2,2,3)
+	plt.scatter(data_python["Result"], data_vivado["Result"])
+	plt.xlabel("Python data")
+	plt.ylabel("Vivado data")
+	plt.title("Results")
+	plt.grid(True)
 
-# Compare ReLU functions
-plt.figure(2)
-plt.subplot(1,2,1)
-plt.scatter(data_python["bias_out"], data_python["Result"])
-plt.xlabel("Python bias_out")
-plt.ylabel("Python relu_out")
-plt.title("Python ReLU comparison")
-plt.grid(True)
+def plot_relu():
+	# Compare ReLU functions
+	plt.figure(2)
+	plt.subplot(1,2,1)
+	plt.scatter(data_python["bias_out"], data_python["Result"])
+	plt.xlabel("Python bias_out")
+	plt.ylabel("Python relu_out")
+	plt.title("Python ReLU comparison")
+	plt.grid(True)
 
-plt.subplot(1,2,2)
-bias_out_vivado_real = [prob_int_to_bipolar(x) for x in data_vivado["bias_out"]]
-relu_out_vivado_real = [int_to_unipolar(x) for x in data_vivado["Result"]]
-plt.scatter(bias_out_vivado_real, relu_out_vivado_real)
-plt.xlabel("Vivado bias_out")
-plt.ylabel("Vivado relu_out")
-plt.title("Vivado ReLU comparison")
-plt.grid(True)
+	plt.subplot(1,2,2)
+	bias_out_vivado_real = [prob_int_to_bipolar(x) for x in data_vivado["bias_out"]]
+	relu_out_vivado_real = [int_to_unipolar(x) for x in data_vivado["Result"]]
+	plt.scatter(bias_out_vivado_real, relu_out_vivado_real)
+	plt.xlabel("Vivado bias_out")
+	plt.ylabel("Vivado relu_out")
+	plt.title("Vivado ReLU comparison")
+	plt.grid(True)
+
+def plot_bias():
+	# Plot python and vivado bias_out values for each test
+	plt.figure(1)
+	plt.bar(data_python["Test"], data_python["bias_out"], label="Python data")
+	plt.scatter(data_vivado["Test"], data_vivado["bias_out"], label="Vivado data")
+	plt.xlabel("Test no.")
+	plt.ylabel("Output")
+	plt.title("bias_out")
+	plt.legend()
+	plt.grid(True)
+
+	plt.figure(2)
+	plt.scatter(data_python["bias_out"], data_vivado["bias_out"])
+	plt.xlabel("Python data")
+	plt.ylabel("Vivado data")
+	plt.title("bias_out")
+	plt.grid(True)
+
+def plot_macc_out():
+	plt.figure(1)
+	plt.scatter(data_python["macc_out"], data_vivado["macc_out"])
+	plt.xlabel("Python data")
+	plt.ylabel("Vivado data")
+	plt.title("macc_out")
+	plt.grid(True)
+
+plot_subplots()
+#plot_relu()
+#plot_bias()
+#plot_macc_out()
 
 plt.show()

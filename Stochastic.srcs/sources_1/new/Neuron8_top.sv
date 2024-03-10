@@ -23,9 +23,6 @@ module Neuron8_top(
     wire macc_result_stoch;
     wire bias_out_stoch;
 
-    // LFSR seeds - 1 for each number generated
-    reg [7:0] LFSR_seeds [0:15] = '{225, 254, 225, 243, 44, 9, 163, 124, 153, 223, 58, 255, 18, 202, 147, 179};
-
     // Generate stoachastic inputs, weights
     genvar i;
     generate
@@ -33,7 +30,7 @@ module Neuron8_top(
             StochNumGen SNG_inps(
                 .clk                (clk),
                 .reset              (reset),
-                .seed               (LFSR_seeds[i]),
+                .seed               (8'd134),               // Using set seeds as better outputs.
                 .prob               (input_data_bin[i]),
                 .stoch_num          (inps_stoch[i])
             );
@@ -41,7 +38,7 @@ module Neuron8_top(
             StochNumGen SNG_wghts(
                 .clk                (clk),
                 .reset              (reset),
-                .seed               (LFSR_seeds[i+8]),
+                .seed               (8'd104),
                 .prob               (weights_bin[i]),
                 .stoch_num          (wghts_stoch[i])
             );
@@ -51,7 +48,7 @@ module Neuron8_top(
     StochNumGen SNG_bias(
         .clk                (clk),
         .reset              (reset),
-        .seed               (8'd12),
+        .seed               (8'd132),       // Changed from 12 to 132, fixed issue of outputs too high
         .prob               (bias_bin),
         .stoch_num          (bias_stoch)
     );

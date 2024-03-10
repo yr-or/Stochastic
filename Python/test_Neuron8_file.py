@@ -236,11 +236,12 @@ def Neuron(inputs, weights, bias):
 	add_3 = (add_2[0] + add_2[1])/2
 	print("add1 = ", add_1)
 	print("add2 = ", add_2)
-	print("add3 = ", add_3)
+	print("add3 = ", add_3, "add3 int =", bipolar_to_prob_int(add_3))
 
 	# Add bias and /2
+	print("Bias: ", bias, "Bias_int: ", bipolar_to_prob_int(bias))
 	bias_out = (add_3 + bias)/2
-	print("Bias out: ", bias_out)
+	print("Bias out: ", bias_out, "Bias out int: ", bipolar_to_prob_int(bias_out))
 
 	# Apply activation function
 	result = 0;
