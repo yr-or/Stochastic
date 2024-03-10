@@ -1,5 +1,6 @@
+// Instantiate SNG and STB for Sigmoid FSM
 
-module ReLU_FSM_top(
+module Sigmoid_FSM_top(
     input clk,
     input reset,
     input [7:0] inp_prob,
@@ -22,7 +23,7 @@ module ReLU_FSM_top(
     );
 
     // Apply stoch input to FSM
-    ReLU_FSM FSM(
+    Sigmoid_FSM FSM(
         .clk                (clk),
         .reset              (reset),
         .in_stoch           (inp_stoch),
@@ -36,6 +37,6 @@ module ReLU_FSM_top(
         .bit_stream         (out_stoch),
         .bin_number         (out_prob),
         .done               (done_stb)
-    );  
+    );
 
 endmodule
