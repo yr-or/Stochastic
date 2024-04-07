@@ -50,6 +50,7 @@ module NN_tb();
             // Wait 256 clock cycles
             #5120;
             // print results
+            $display("Test: %d", i+1);
             $display("Results: %d, %d, %d, %d, %d", results_bin[0], results_bin[1], results_bin[2], results_bin[3], results_bin[4]);
             $display("Macc results: %d, %d, %d, %d, %d", macc_results_bin[0], macc_results_bin[1], macc_results_bin[2], macc_results_bin[3], macc_results_bin[4]);
         end

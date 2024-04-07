@@ -23,14 +23,13 @@ inps = []
 outs = []
 
 regexp = re.compile(r"Input:\s+(?P<input>\d+), Output:\s+(?P<output>\d+)")
-with open("C:\\Users\\Rory\\Documents\\HDL\\Stochastic\\Stochastic.sim\\sim_1\\behav\\xsim\\sigmoid_data.txt", "r+") as f:
+with open("C:\\Users\\Rory\\Documents\\HDL\\Stochastic\\Stochastic.sim\\sim_1\\behav\\xsim\\relu_data.txt", "r+") as f:
 	for line in f:
 		m = regexp.search(line)
 		inps.append(int(m.group('input')))
 		outs.append(int(m.group('output')))
 
 x_bi = [prob_int_to_bipolar(x) for x in inps]
-y_bi = [prob_int_to_bipolar(y) for y in outs]
 y_uni = [int_to_unipolar(y) for y in outs]
 
 plt.figure(1)
@@ -40,5 +39,12 @@ plt.grid(True)
 plt.figure(2)
 plt.scatter(x_bi, y_uni)
 plt.grid(True)
+plt.xlabel("Input value")
+plt.ylabel("Output value")
+plt.title("ReLU data")
 
 plt.show()
+
+
+
+

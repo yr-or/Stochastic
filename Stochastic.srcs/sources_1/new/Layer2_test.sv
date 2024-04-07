@@ -28,7 +28,7 @@ module Layer2_test(
             StochNumGen SNG_inps(
                 .clk                (clk),
                 .reset              (reset),
-                .seed               (LFSR_seeds_inps[i]),
+                .seed               (8'd104),           // Changed to single value
                 .prob               (input_data_bin[i]),
                 .stoch_num          (inps_stoch[i])
             );

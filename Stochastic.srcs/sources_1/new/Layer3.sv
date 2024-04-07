@@ -52,16 +52,21 @@ module Layer3(
                 StochNumGen SNG_wghts(
                     .clk                (clk),
                     .reset              (reset),
-                    .seed               (LFSR_seeds_wghts[i][j]),
+                    .seed               (8'd129),
                     .prob               (weights_prob[i][j]),
                     .stoch_num          (wghts_stoch[i][j])
                 );
             end
+        end
+    endgenerate
+
+    generate
+        for (i=0; i<NUM_NEUR; i=i+1) begin
             // 8 SNGs for biases
             StochNumGen SNG_bias(
                 .clk                (clk),
                 .reset              (reset),
-                .seed               (LFSR_seeds_biases[i]),
+                .seed               (8'd73),
                 .prob               (bias_probs[i]),
                 .stoch_num          (bias_stoch[i])
             );

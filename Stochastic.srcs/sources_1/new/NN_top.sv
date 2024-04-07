@@ -33,7 +33,7 @@ module NN_top(
             StochNumGen SNG_inps(
                 .clk                (clk),
                 .reset              (reset),
-                .seed               (LFSR_seeds_inps[i]),
+                .seed               (8'd176),
                 .prob               (input_data_bin[i]),
                 .stoch_num          (inps_stoch[i])
             );

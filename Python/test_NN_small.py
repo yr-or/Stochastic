@@ -32,17 +32,18 @@ def Neuron(inputs, weights, bias):
 	add_3 = (add_2[0] + add_2[1])/2
 	print("add1 = ", add_1)
 	print("add2 = ", add_2)
-	print("add3 = ", add_3)
+	print("add3 = ", add_3, "add3 int =", bipolar_to_prob_int(add_3))
 
 	# Add bias and /2
+	print("Bias: ", bias, "Bias_int: ", bipolar_to_prob_int(bias))
 	bias_out = (add_3 + bias)/2
-	print("Bias out: ", bias_out)
+	print("Bias out: ", bias_out, "Bias out int: ", bipolar_to_prob_int(bias_out))
 
 	# Apply activation function
 	result = 0;
 	if bias_out > 0:
 		result = bias_out
-	return result
+	return (result, add_3, bias_out)
 
 # Test data
 test_inputs = (
@@ -87,31 +88,50 @@ x_bi = [prob_int_to_bipolar(x) for x in inputs_L2]
 print("x_bi = ", x_bi)
 
 # Calculate layer2 outputs
-L2_out = []
+L2_results = []
+L2_macc_out = []
+L2_bias_out = []
 for i in range(8):
 	# Convert weights probs to bipolar floats
 	w_bi = [prob_int_to_bipolar(w) for w in weights_L2[i]]
 	# Convert bias to bipolar
 	b_bi = prob_int_to_bipolar(biases_L2[i])
 	# Input to neuron i
-	L2_out.append( Neuron(x_bi, w_bi, b_bi) )
+	results = Neuron(x_bi, w_bi, b_bi)
+	L2_results.append(results[0])
+	L2_macc_out.append(results[1])
+	L2_bias_out.append(results[2])
 
-print("L2_out = ", L2_out)
-print("L2_out prob int =", [bipolar_to_prob_int(y) for y in L2_out])
+print("L2_results = ", L2_results)
+print("L2_results prob int =", [unipolar_to_int(y) for y in L2_results])
+
+print("L2_macc_out = ", L2_macc_out)
+print("L2_macc_out prob int =", [bipolar_to_prob_int(y) for y in L2_macc_out])
+
+print("L2_bias_out = ", L2_bias_out)
+print("L2_bias_out prob int =", [bipolar_to_prob_int(y) for y in L2_bias_out])
 
 # Calculate layer3 outputs
-"""
-L3_out = []
+
+L3_results = []
+L3_macc_out = []
+L3_bias_out = []
 for i in range(5):
 	# Convert weights and bias to bipolar
 	w_bi = [prob_int_to_bipolar(w) for w in weights_L3[i]]
 	b_bi = prob_int_to_bipolar(biases_L3[i])
 	# Input to neuron
-	L3_out.append( Neuron(L2_out, w_bi, b_bi) )
+	results = Neuron(L2_results, w_bi, b_bi)
+	L3_results.append(results[0])
+	L3_macc_out.append(results[1])
+	L3_bias_out.append(results[2])
 
-# Results
-print("L3_out = ", L3_out)
+# Print results
+print("L3_results = ", L3_results)
+print("L3_results prob int =", [unipolar_to_int(y) for y in L3_results])
 
-# Display result in integer probability form
-print("L3_out prob int = ", [bipolar_to_prob_int(y) for y in L3_out])
-"""
+print("L3_macc_out = ", L3_macc_out)
+print("L3_macc_out prob int =", [bipolar_to_prob_int(y) for y in L3_macc_out])
+
+print("L3_bias_out = ", L3_bias_out)
+print("L3_bias_out prob int =", [bipolar_to_prob_int(y) for y in L3_bias_out])

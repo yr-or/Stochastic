@@ -33,12 +33,16 @@ module Layer2_tb();
         .done               (done_stb)
     );
 
+    integer fd; // file object
+    localparam NUM_TESTS = 5;
+
     // Apply test data in order
     initial begin
+        fd = $fopen("Layer2_test.txt", "w");
         reset = 1;
         #10;
 
-        for (int i=0; i<5; i=i+1) begin
+        for (int i=0; i<NUM_TESTS; i=i+1) begin
             // Set inputs
             reset = 1;
             input_data_bin = test_inputs[i];
@@ -50,15 +54,24 @@ module Layer2_tb();
             // Wait 256 clock cycles
             #5120;
             // print results
-            $write("L2_out = ");
+            $display("Test: %d", i+1);
+            $fdisplay(fd, "Test: %d", i+1);
+            $write("L2_out: ");
+            $fwrite(fd, "L2_out: ");
             for (int j=0; j<8; j=j+1) begin
                 $write("%d, ", results_bin[j]);
+                $fwrite(fd, "%d, ", results_bin[j]);
             end
-            $write("\nL2_macc_out = ");
+            $write("\nL2_macc_out: ");
+            $fwrite(fd, "\nL2_macc_out: ");
             for (int j=0; j<8; j=j+1) begin
                 $write("%d, ", macc_results_bin[j]);
+                $fwrite(fd, "%d, ", macc_results_bin[j]);
             end
+            $write("\n");
+            $fwrite(fd, "\n");
         end
+        $fclose(fd);
     end
 
     // Clock gen

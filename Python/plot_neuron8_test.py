@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import re
+import numpy as np
 
 def prob_to_bipolar(x):
 	return (2*x)-1
@@ -101,23 +102,39 @@ def plot_bias():
 	plt.grid(True)
 
 	plt.figure(2)
-	plt.scatter(data_python["bias_out"], data_vivado["bias_out"])
+	x_bi = [prob_int_to_bipolar(x) for x in data_python["bias_out"]]
+	y_bi = [prob_int_to_bipolar(x) for x in data_vivado["bias_out"]]
+	plt.scatter(x_bi, y_bi)
 	plt.xlabel("Python data")
 	plt.ylabel("Vivado data")
 	plt.title("bias_out")
 	plt.grid(True)
+	# Get r^2 value
+	correlation_matrix = np.corrcoef(x_bi, y_bi)
+	correlation_xy = correlation_matrix[0,1]
+	r_squared = correlation_xy**2
+	print(r_squared)
+
 
 def plot_macc_out():
 	plt.figure(1)
-	plt.scatter(data_python["macc_out"], data_vivado["macc_out"])
+	x_bi = [prob_int_to_bipolar(x) for x in data_python["macc_out"]]
+	y_bi = [prob_int_to_bipolar(x) for x in data_vivado["macc_out"]]
+	plt.scatter(x_bi, y_bi)
 	plt.xlabel("Python data")
 	plt.ylabel("Vivado data")
 	plt.title("macc_out")
 	plt.grid(True)
+	# Get r^2 value
+	correlation_matrix = np.corrcoef(x_bi, y_bi)
+	correlation_xy = correlation_matrix[0,1]
+	r_squared = correlation_xy**2
+	print(r_squared)
 
-plot_subplots()
+#plot_subplots()
 #plot_relu()
-#plot_bias()
+plot_bias()
 #plot_macc_out()
 
 plt.show()
+
