@@ -37,7 +37,7 @@ module Neuron8(
     );
 
     // Activation function
-    ReLU_FSM act_fcn(
+    Sigmoid_FSM act_fcn(
         .clk                (clk),
         .reset              (reset),
         .in_stoch           (result_bias),

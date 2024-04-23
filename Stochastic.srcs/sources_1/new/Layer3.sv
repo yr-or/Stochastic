@@ -31,17 +31,17 @@ module Layer3(
     };
     // Binary probability weights values
     reg [7:0] weights_prob [0:NUM_NEUR-1][0:NUM_INP-1] = '{
-        { 114, 57, 252, 135, 6, 61, 183, 17 },
-        { 10, 71, 247, 1, 183, 3, 216, 22 },
-        { 140, 13, 20, 251, 133, 178, 116, 12 },
-        { 61, 80, 98, 27, 132, 40, 72, 19 },
-        { 83, 68, 143, 31, 230, 160, 53, 14 }
+        {90, 47, 4, 94, 51, 44, 16, 76},
+        {59, 30, 67, 10, 65, 5, 11, 9},
+        {82, 56, 47, 48, 73, 73, 102, 75},
+        {54, 115, 56, 23, 1, 79, 40, 81},
+        {88, 76, 0, 112, 117, 57, 46, 81}
     };
 
     // LFSR seeds for biases
     reg [7:0] LFSR_seeds_biases [0:NUM_NEUR-1] = '{ 8, 128, 252, 101, 25 };
     // Binary probability bias values
-    reg [7:0] bias_probs [0:NUM_NEUR-1] = '{ 219, 217, 10, 120, 107 };
+    reg [7:0] bias_probs [0:NUM_NEUR-1] = '{ 52, 227, 110, 11, 39 };
 
     // SNGs for weights and biases
     genvar i, j;

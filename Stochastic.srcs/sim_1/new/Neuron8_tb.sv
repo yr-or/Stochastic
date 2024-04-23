@@ -264,7 +264,7 @@ module Neuron8_tb();
             reset = 0;
 
             // Wait 256 clock cycles
-            #5120;
+            #5100;
             $fwrite(fd, "Test: %d, ", i+1);
             $fwrite(fd, "Result: %d, ", result_bin);
             $fwrite(fd, "macc_out: %d, ", macc_result_bin);

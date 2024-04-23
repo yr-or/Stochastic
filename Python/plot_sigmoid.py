@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
+import numpy as np
 import re
+from sklearn.metrics import mean_squared_error
 
 def prob_to_bipolar(x):
 	return (2*x)-1
@@ -18,6 +20,9 @@ def unipolar_to_int(x):
 
 def int_to_unipolar(x):
 	return x/256
+
+def sigmoid(x):
+	return 1 / (1 + np.exp(-6*x))
 
 inps = []
 outs = []
@@ -38,11 +43,21 @@ plt.scatter(inps, outs)
 plt.grid(True)
 
 plt.figure(2)
-plt.scatter(x_bi, y_uni)
+plt.scatter(x_bi, y_uni, label="Sigmoid FSM")
 plt.grid(True)
 plt.xlabel("Input value")
 plt.ylabel("Output value")
 plt.title("Sigmoid data")
+# Plot actual sigmoid function
+sgm_x_pts = np.linspace(-1,1,100)
+sgm_y_pts = sigmoid(sgm_x_pts)
+plt.plot(sgm_x_pts, sgm_y_pts, 'r', label="Sigmoid exact")
+plt.legend()
 
+# Get MSE
+sgm_x_pts = np.array(x_bi)
+sgm_y_pts = sigmoid(sgm_x_pts)
+mse = mean_squared_error(sgm_y_pts, y_uni)
+print("MSE =", mse)
 
 plt.show()

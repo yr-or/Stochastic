@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import re
 import numpy as np
+from sklearn.metrics import mean_squared_error
 
 def prob_to_bipolar(x):
 	return (2*x)-1
@@ -71,24 +72,27 @@ def plot_subplots():
 	plt.title("Results")
 	plt.grid(True)
 
-def plot_relu():
-	# Compare ReLU functions
-	plt.figure(2)
-	plt.subplot(1,2,1)
-	plt.scatter(data_python["bias_out"], data_python["Result"])
-	plt.xlabel("Python bias_out")
-	plt.ylabel("Python relu_out")
-	plt.title("Python ReLU comparison")
-	plt.grid(True)
-
-	plt.subplot(1,2,2)
+def plot_act():
+	# Plot input vs. output of act function for Verilog data
 	bias_out_vivado_real = [prob_int_to_bipolar(x) for x in data_vivado["bias_out"]]
 	relu_out_vivado_real = [int_to_unipolar(x) for x in data_vivado["Result"]]
-	plt.scatter(bias_out_vivado_real, relu_out_vivado_real)
-	plt.xlabel("Vivado bias_out")
-	plt.ylabel("Vivado relu_out")
-	plt.title("Vivado ReLU comparison")
+	plt.scatter(bias_out_vivado_real, relu_out_vivado_real, label="Simulation values")
+
+	# Plot input vs output of act function, python model
+	plt.figure(1)
+	x_pts = [prob_int_to_bipolar(x) for x in data_python["bias_out"]]
+	y_pts = [prob_int_to_bipolar(x) for x in data_python["Result"]]
+	plt.scatter(x_pts, y_pts, label="Expected values")
+	plt.xlabel("Input")
+	plt.ylabel("Output")
+	plt.title("Sigmoid Neuron output")
 	plt.grid(True)
+	plt.legend()
+
+	# Get MSE
+	mse = mean_squared_error(y_pts, relu_out_vivado_real)
+	print("MSE =", mse)
+
 
 def plot_bias():
 	# Plot python and vivado bias_out values for each test
@@ -102,18 +106,25 @@ def plot_bias():
 	plt.grid(True)
 
 	plt.figure(2)
-	x_bi = [prob_int_to_bipolar(x) for x in data_python["bias_out"]]
-	y_bi = [prob_int_to_bipolar(x) for x in data_vivado["bias_out"]]
+	#x_bi = [prob_int_to_bipolar(x) for x in data_python["bias_out"]]
+	#y_bi = [prob_int_to_bipolar(x) for x in data_vivado["bias_out"]]
+	x_bi = -1
+	y_bi = -1
 	plt.scatter(x_bi, y_bi)
-	plt.xlabel("Python data")
-	plt.ylabel("Vivado data")
-	plt.title("bias_out")
+	plt.xlabel("Expected value")
+	plt.ylabel("Simulated value")
+	plt.title("Bias output")
 	plt.grid(True)
+	plt.xlim([-0.6, 0.6])
+	plt.ylim([-0.6, 0.6])
 	# Get r^2 value
-	correlation_matrix = np.corrcoef(x_bi, y_bi)
-	correlation_xy = correlation_matrix[0,1]
-	r_squared = correlation_xy**2
-	print(r_squared)
+	#correlation_matrix = np.corrcoef(x_bi, y_bi)
+	#correlation_xy = correlation_matrix[0,1]
+	#r_squared = correlation_xy**2
+	#print("R-sq =", r_squared)
+	# Get MSE
+	#mse = mean_squared_error(x_bi, y_bi)
+	#print("MSE =", mse)
 
 
 def plot_macc_out():
@@ -121,20 +132,22 @@ def plot_macc_out():
 	x_bi = [prob_int_to_bipolar(x) for x in data_python["macc_out"]]
 	y_bi = [prob_int_to_bipolar(x) for x in data_vivado["macc_out"]]
 	plt.scatter(x_bi, y_bi)
-	plt.xlabel("Python data")
-	plt.ylabel("Vivado data")
-	plt.title("macc_out")
+	plt.xlabel("Expected value")
+	plt.ylabel("Simulated value")
+	plt.title("MAC output")
 	plt.grid(True)
 	# Get r^2 value
 	correlation_matrix = np.corrcoef(x_bi, y_bi)
 	correlation_xy = correlation_matrix[0,1]
 	r_squared = correlation_xy**2
-	print(r_squared)
+	print("R-sq =", r_squared)
+	# Get MSE
+	mse = mean_squared_error(x_bi, y_bi)
+	print("MSE =", mse)
 
 #plot_subplots()
-#plot_relu()
+#plot_act()
 plot_bias()
 #plot_macc_out()
 
 plt.show()
-

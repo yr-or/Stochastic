@@ -1,20 +1,21 @@
+import numpy as np
 
 def prob_to_bipolar(x):
-	return (2*x)-1
+    return (2*x)-1
 
 def prob_int_to_bipolar(x):
-	return prob_to_bipolar(x/256)
+    return prob_to_bipolar(x/256)
 
 def bipolar_to_prob(y):
-	return (y+1)/2
+    return (y+1)/2
 
 def bipolar_to_prob_int(y):
-	return int(bipolar_to_prob(y)*256)
+    return int(bipolar_to_prob(y)*256)
 
 
 # Test data
 test_inputs = (
-	[174, 171, 31, 234, 212, 178, 148, 44],
+    [174, 171, 31, 234, 212, 178, 148, 44],
     [113, 92, 226, 34, 68, 118, 47, 14],
     [204, 255, 78, 2, 209, 93, 28, 193],
     [28, 176, 36, 187, 47, 154, 21, 187],
@@ -114,10 +115,10 @@ test_inputs = (
     [178, 153, 240, 146, 234, 254, 200, 108],
     [155, 230, 93, 28, 123, 136, 189, 4],
     [169, 230, 244, 99, 188, 120, 199, 0]
-	)
+    )
 
 test_weights = (
-	[123, 72, 133, 215, 143, 100, 56, 176],
+    [123, 72, 133, 215, 143, 100, 56, 176],
     [48, 25, 155, 68, 227, 109, 149, 213],
     [41, 172, 234, 9, 34, 12, 122, 41],
     [167, 136, 218, 194, 232, 91, 246, 45],
@@ -217,52 +218,60 @@ test_weights = (
     [53, 95, 231, 79, 49, 39, 156, 74],
     [48, 4, 160, 38, 125, 77, 180, 12],
     [149, 127, 31, 220, 238, 212, 152, 108]
-	)
+    )
 
 test_biases = [ 137, 26, 20, 220, 40, 2, 115, 83, 90, 127, 207, 20, 1, 109, 157, 237, 140, 27, 14, 234, 18, 66, 117, 154, 102, 229, 73, 79, 60, 138, 131, 147, 245, 213, 110, 179, 63, 244, 83, 101, 215, 25, 93, 8, 120, 180, 75, 129, 78, 83, 190, 59, 59, 67, 97, 128, 154, 203, 1, 250, 78, 113, 106, 124, 36, 221, 75, 191, 90, 238, 173, 203, 125, 73, 166, 135, 214, 55, 107, 152, 36, 115, 254, 54, 210, 5, 184, 32, 39, 104, 15, 44, 92, 14, 37, 1, 103, 109, 68, 38 ]
 
+def sigmoid(x):
+    return 1 / (1 + np.exp(-6*x))
+
 def Neuron(inputs, weights, bias):
-	"""
-	Inputs: float values representing stoch probs.
-	Outputs: float values repr. stoch. prob.
-	"""
-	# Multiply
-	mul = [inputs[i]*weights[i] for i in range(len(inputs))]
-	print("mul = ", mul)
+    """
+    Inputs: float values representing stoch probs.
+    Outputs: float values repr. stoch. prob.
+    """
+    # Multiply
+    mul = [inputs[i]*weights[i] for i in range(len(inputs))]
+    print("mul = ", mul)
 
-	# Sum pairs and /2
-	add_1 = [ (mul[i*2]+mul[(i*2)+1])/2 for i in range(4) ]
-	add_2 = [ (add_1[i*2]+add_1[(i*2)+1])/2 for i in range(2) ]
-	add_3 = (add_2[0] + add_2[1])/2
-	print("add1 = ", add_1)
-	print("add2 = ", add_2)
-	print("add3 = ", add_3, "add3 int =", bipolar_to_prob_int(add_3))
+    # Sum pairs and /2
+    add_1 = [ (mul[i*2]+mul[(i*2)+1])/2 for i in range(4) ]
+    add_2 = [ (add_1[i*2]+add_1[(i*2)+1])/2 for i in range(2) ]
+    add_3 = (add_2[0] + add_2[1])/2
+    print("add1 = ", add_1)
+    print("add2 = ", add_2)
+    print("add3 = ", add_3, "add3 int =", bipolar_to_prob_int(add_3))
 
-	# Add bias and /2
-	print("Bias: ", bias, "Bias_int: ", bipolar_to_prob_int(bias))
-	bias_out = (add_3 + bias)/2
-	print("Bias out: ", bias_out, "Bias out int: ", bipolar_to_prob_int(bias_out))
+    # Add bias and /2
+    print("Bias: ", bias, "Bias_int: ", bipolar_to_prob_int(bias))
+    bias_out = (add_3 + bias)/2
+    print("Bias out: ", bias_out, "Bias out int: ", bipolar_to_prob_int(bias_out))
 
-	# Apply activation function
-	result = 0;
-	if bias_out > 0:
-		result = bias_out
-	return (result, add_3, bias_out)
+    # Apply ReLU activation function
+    """result = 0;
+    if bias_out > 0:
+        result = bias_out
+    """
+
+    # Apply Sigmoid activation function
+    result = sigmoid(bias_out)
+
+    return (result, add_3, bias_out)
 
 # Run 100 tests
 results_bi = []
 results_int = []
 for i in range(100):
-	# Convert  to bipolar floats
-	x_bi = [prob_int_to_bipolar(x) for x in test_inputs[i]]
-	w_bi = [prob_int_to_bipolar(w) for w in test_weights[i]]
-	b_bi = prob_int_to_bipolar(test_biases[i])
+    # Convert  to bipolar floats
+    x_bi = [prob_int_to_bipolar(x) for x in test_inputs[i]]
+    w_bi = [prob_int_to_bipolar(w) for w in test_weights[i]]
+    b_bi = prob_int_to_bipolar(test_biases[i])
 
-	results = Neuron(x_bi, w_bi, b_bi)
-	results_bi.append(results)
-	results_int.append([bipolar_to_prob_int(y) for y in results])
+    results = Neuron(x_bi, w_bi, b_bi)
+    results_bi.append(results)
+    results_int.append([bipolar_to_prob_int(y) for y in results])
 
 # print to file
 with open("neuron8_test_python.txt", "w") as f:
-	for i in range(len(results_int)):
-		f.write(f"Test: {i+1}, Result: {results_int[i][0]}, macc_out: {results_int[i][1]}, bias_out: {results_int[i][2]}\n")
+    for i in range(len(results_int)):
+        f.write(f"Test: {i+1}, Result: {results_int[i][0]}, macc_out: {results_int[i][1]}, bias_out: {results_int[i][2]}\n")
