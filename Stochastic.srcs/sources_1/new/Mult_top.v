@@ -5,7 +5,8 @@ module Mult_top (
     input reset,
     input [7:0] num1,
     input [7:0] num2,
-    output [3:0] num_mul
+    output [3:0] num_mul,
+    output done
     );
 
     wire num1_stoch;
@@ -18,7 +19,7 @@ module Mult_top (
     StochNumGen SNG1(
         .clk                (clk),
         .reset              (reset),
-        .seed               (8'b10110111),
+        .seed               (8'd50),
         .prob               (num1),
         .stoch_num          (num1_stoch)
     );
@@ -27,7 +28,7 @@ module Mult_top (
     StochNumGen SNG2(
         .clk                (clk),
         .reset              (reset),
-        .seed               (8'b01011100),
+        .seed               (8'd238),
         .prob               (num2),
         .stoch_num          (num2_stoch)
     );
@@ -44,7 +45,8 @@ module Mult_top (
         .clk                (clk),
         .reset              (reset),
         .bit_stream         (prod_stoch),
-        .bin_number         (prod)
+        .bin_number         (prod),
+        .done               (done)
     );
 
     assign num_mul = prod;

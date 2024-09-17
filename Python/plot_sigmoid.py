@@ -22,7 +22,7 @@ def int_to_unipolar(x):
 	return x/256
 
 def sigmoid(x):
-	return 1 / (1 + np.exp(-6*x))
+	return 1 / (1 + np.exp(-4*x))
 
 inps = []
 outs = []
